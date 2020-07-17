@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'column',
     background: 'rgba(255, 255, 255, 0.6)',
-    paddingBottom: '10rem',
+    paddingBottom: '7rem',
   },
   check: {
     marginLeft: 167,

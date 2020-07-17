@@ -10,8 +10,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   rootContainer: {
-    marginLeft: '22rem',
-    marginRight: '22rem',
+    marginLeft: '21rem',
+    marginRight: '21rem',
     marginTop: '7.8rem',
     marginBottom: '7.8rem',
     paddingBottom: '6rem',
@@ -19,13 +19,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 3,
     textAlign: 'center',
     outline: 'none',
-  },
-  buttonOutline: {
-    minWidth: '4.375rem',
-    height: '2.2.2rem',
-    border: '0.0625rem solid',
-    borderColor: theme.palette.secondary.dark,
-    marginRight: theme.spacing(2),
   },
   heading: {
     fontfamily: 'Ubuntu',
@@ -64,20 +57,18 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   /* CSS for input and password field */
   inputArea: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(3),
+    marginTop: theme.spacing(3.76),
     display: 'flex',
-    //textAlign: 'center',
-    marginLeft: theme.spacing(32),
-    marginRight: theme.spacing(32),
+    textAlign: 'center',
+    marginLeft: theme.spacing(37.2),
+    marginRight: theme.spacing(37.2),
     textDecoration: 'none',
     flexDirection: 'column',
     paddingLeft: theme.spacing(2),
     paddingBottom: theme.spacing(2.2),
-    //alignItems: 'center',
     borderRadius: 3,
-    border: '0.0625rem solid #5B44BA',
-    borderLeft: '0.0625rem solid #5B44BA',
+    border: '0.0625rem solid $(theme.palette.secondary.dark)',
+    borderLeft: '0.1875rem solid $(theme.palette.secondary.dark)',
   },
   inputDiv: {
     marginTop: theme.spacing(6.26),
@@ -86,7 +77,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   /* CSS for stpper */
   rootStepper: {
-    color: '#D1D2D7',
+    color: theme.palette.common.white,
     display: 'flex',
     height: 22,
     alignItems: 'center',

@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from '@material-ui/core/Modal';
 import useStyles from './styles';
-import ModalStepper from './Stepper';
+import CStepper from './step';
 
 interface ModalProps {
   isOpen: boolean;
@@ -19,7 +19,7 @@ const WelcomeModal: React.FC<ModalProps> = ({ isOpen }) => {
   };
   const body = (
     <div className={classes.rootContainer}>
-      <ModalStepper />
+      <CStepper />
     </div>
   );
 
@@ -32,7 +32,6 @@ const WelcomeModal: React.FC<ModalProps> = ({ isOpen }) => {
         aria-describedby="simple-modal-description"
         disableBackdropClick
         disableEscapeKeyDown
-        
       >
         {body}
       </Modal>
