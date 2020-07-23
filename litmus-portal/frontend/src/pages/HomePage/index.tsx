@@ -8,8 +8,6 @@ import QuickActionCard from '../../components/QuickActionCard';
 import Scaffold from '../../containers/layouts/Scaffold';
 import useStyles from './style';
 import { RootState } from '../../redux/reducers';
-import WelcomeModal from '../../components/WelcomeModal';
-
 const CreateWorkflowCard = () => {
   const classes = useStyles();
   const history = useHistory();
@@ -43,9 +41,8 @@ const HomePage = () => {
   const { userData } = useSelector((state: RootState) => state);
   const { name } = userData;
   const classes = useStyles();
-  if (userData.email === '') {
-    return <WelcomeModal isOpen />;
-  }
+  if (userData.email === '') {}
+    //return <WelcomeModal isOpen />;
 
   return (
     <Scaffold>
