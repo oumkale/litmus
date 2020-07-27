@@ -30,9 +30,7 @@ const WorkflowCluster = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
   };
-  const handleClick=()=>{
-    //
-  }
+  const handleClick=()=>{}
   return (
     <div className={classes.rootcontainer}>
       {/* Arrow mark */}
@@ -79,39 +77,27 @@ const WorkflowCluster = () => {
         is install and running) or alternative Install Litmus Agent to 
         other Kubernetes cluster 
       */}
-      <div>
-        <div
-          style={{
-            marginLeft: 167,
-            textAlign: 'left',
-            marginTop: 67,
-          }}
-        >
+      <div className={classes.buttonDiv}>
+        <div className={classes.button}>
           <Button variant="contained" color="secondary" data-cy="selectButton">
             Select and continue
           </Button>
-          
-        </div>
+        </div>    
+        
         <div className={classes.or}>or</div>
-        <div
-          style={{
-            marginLeft: 359,
-            marginTop: -25,
-            textAlign: 'left',
-          }}
-        >
+        <div >
           <ButtonOutLine
             isDisabled={false}
             data-cy="selectLitmusKubernetes"
             handleClick={handleClick}
           >
-            <>
               <Typography>Install Litmus agents to other Kubernetes cluster</Typography>
-            </>
           </ButtonOutLine>
           
         </div>
-      </div>
+      
+    </div>
+
     </div>
   );
 };
