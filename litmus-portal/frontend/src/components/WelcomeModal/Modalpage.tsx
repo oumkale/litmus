@@ -1,42 +1,40 @@
 import React from 'react';
 import useStyles from './styles';
 
-function Icon() {
+const Icon = () => {
   const classes = useStyles();
   return (
     <img src="icons/LitmusLogo.png" className={classes.mark} alt="markLitmus" />
   );
-}
-interface ModalData {
-  renderMenu: any;
+};
+
+interface ModalDataProps {
+  renderMenu: JSX.Element;
   setText?: string;
   setName?: string;
 }
 
 /* This is main page to take input for Project */
-const ModalPage: React.FC<ModalData> = ({
+const ModalPage: React.FC<ModalDataProps> = ({
   renderMenu,
   setText,
   setName,
 }) => {
   const classes = useStyles();
   return (
-    <div>
-      <div>
-        <Icon />
-      </div>
+    <div className={classes.insideModal}>
+      <Icon />
       <div className={classes.heading}>
         Welcome to Litmus Portal,
         <br />
         {/* Pass here corrosponding name of user */}
-          <strong> {setName} </strong>
+        <strong> {setName} </strong>
       </div>
       <div className={classes.infoHeading}>
         {setText} <br />
       </div>
 
       <div>{renderMenu}</div>
-      
     </div>
   );
 };
