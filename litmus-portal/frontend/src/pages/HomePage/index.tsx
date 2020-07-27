@@ -41,9 +41,9 @@ const HomePage = () => {
   const { userData } = useSelector((state: RootState) => state);
   const { name } = userData;
   const classes = useStyles();
-  if (userData.email === '') {}
-    //return <WelcomeModal isOpen />;
-
+  if (userData.email === '') {
+    return <WelcomeModal isOpen />;
+  }
   return (
     <Scaffold>
       <div className={classes.rootContainer}>
