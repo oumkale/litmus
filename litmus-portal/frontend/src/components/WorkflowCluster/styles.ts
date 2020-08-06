@@ -42,16 +42,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: theme.spacing(2),
   },
   button: {
-    marginLeft: theme.spacing(20),
-    marginRight: theme.spacing(2), 
+    marginLeft: theme.spacing(18),
   },
-  buttonDiv:{
+  buttonDiv: {
     marginTop: theme.spacing(6),
     display: 'flex',
     flexDirection: 'row',
   },
   or: {
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1.5),
   },
 }));
 

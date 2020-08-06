@@ -9,7 +9,6 @@ import React from 'react';
 import ButtonFilled from '../Button/ButtonFilled';
 import ButtonOutline from '../Button/ButtonOutline';
 import FinishModal from '../FinishModal';
-import Loader from '../Loader';
 import ReliablityScore from '../ReliabilityScore';
 import ScheduleWorkflow from '../ScheduleWorkflow';
 import VerifyCommit from '../VerifyCommit';
@@ -17,6 +16,8 @@ import WorkflowCluster from '../WorkflowCluster';
 import QontoConnector from './quontoConnector';
 import useStyles from './styles';
 import useQontoStepIconStyles from './useQontoStepIconStyles';
+import TuneWorkflow from '../TuneWorkflow/index';
+import ChooseWorkflow from '../ChooseWorkflow/index';
 
 function getSteps(): string[] {
   return [
@@ -77,9 +78,9 @@ function getStepContent(stepIndex: number): React.ReactNode {
     case 0:
       return <WorkflowCluster />;
     case 1:
-      return <Loader />;
+      return <ChooseWorkflow />;
     case 2:
-      return 'Show something random';
+      return <TuneWorkflow />;
     case 3:
       return <ReliablityScore />;
     case 4:
@@ -155,10 +156,20 @@ const CustomStepper = () => {
               >
                 <Typography>Back</Typography>
               </ButtonOutline>
-              <ButtonFilled
-                handleClick={handleNext}
-                value={activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-              />
+              <ButtonFilled handleClick={handleNext} isPrimary>
+                {activeStep === steps.length - 1 ? (
+                  <div>Finish</div>
+                ) : (
+                  <div>
+                    Next{' '}
+                    <img
+                      alt="next"
+                      src="icons/nextArrow.svg"
+                      className={classes.nextArrow}
+                    />
+                  </div>
+                )}
+              </ButtonFilled>
             </div>
           </div>
         )}
