@@ -18,6 +18,8 @@ import useStyles from './styles';
 import useQontoStepIconStyles from './useQontoStepIconStyles';
 import TuneWorkflow from '../TuneWorkflow/index';
 import ChooseWorkflow from '../ChooseWorkflow/index';
+import { CREATE_WORKFLOW } from '../../schemas';
+import { useMutation, gql } from '@apollo/client';
 
 function getSteps(): string[] {
   return [
@@ -30,7 +32,22 @@ function getSteps(): string[] {
   ];
 }
 
-function QontoStepIcon(props: StepIconProps) {
+const [createChaosWorkFlow, { error, data }] = useMutation(CREATE_WORKFLOW);
+  const ChaosWorkFlowInputs = {
+  workflow_manifest:"Yaml will be here",
+    cronSyntax: "",
+    weightages: [{experiment_name:"ex", weightage:2}],
+    workflow_name:"pod-delete",
+    workflow_description:"good",
+    isCustomWorkflow:true,
+    project_id:"00000",
+    cluster_id:"1"
+  };
+
+  //To add 
+  //createChaosWorkFlow({variables:{ChaosWorkFlowInput : ChaosWorkFlowInputs}})
+
+  function QontoStepIcon(props: StepIconProps) {
   const classes = useQontoStepIconStyles();
   const { active, completed } = props;
 

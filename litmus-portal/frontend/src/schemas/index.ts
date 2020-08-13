@@ -29,15 +29,10 @@ export const WORKFLOW_EVENTS = gql`
 `;
 
 export const CREATE_WORKFLOW = gql`
-  mutation createWorkflow($workflow: WorkflowInput) {
-    createWorkflow(workflow: $workflow) {
-      workflow_manifest: String
-      cronSyntax: String
-      workflow_name: String
-      workflow_description: String
-      weightages: [WeightagesInput]
-      isCustomWorkflow: Boolean
-      
+  mutation createChaosWorkFlow($ChaosWorkFlowInput: ChaosWorkFlowInput!) {
+    createChaosWorkFlow(input: $ChaosWorkFlowInput){
+      workflow_name
+     
     }
   }
 `;

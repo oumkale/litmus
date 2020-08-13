@@ -17,12 +17,8 @@ import {
   AceValidations,
 } from '../YamlEditor/Validations';
 import parsed from '../../utils/yamlUtils';
-<<<<<<< HEAD
 import { useMutation, gql } from '@apollo/client';
 import { CREATE_WORKFLOW } from '../../schemas';
-=======
-
->>>>>>> upstream/litmus-portal
 // refractor needed
 
 function VerifyCommit() {
@@ -37,26 +33,6 @@ function VerifyCommit() {
   const workflowData: WorkflowData = useSelector(
     (state: RootState) => state.workflowData
   );
-<<<<<<< HEAD
-  /*
-  export interface experimentMap {
-    experimentName: string;
-    weight: number
-  }
-  export interface WorkflowData {
-    workflow_manifest: String!
-      cronSyntax: String!
-      workflow_name: String!
-      workflow_description: String!
-      weightages: [WeightagesInput!]!
-      isCustomWorkflow: Boolean!
-      project_id: ID!
-      cluster_id: ID!
-  }
-  */
-=======
-
->>>>>>> upstream/litmus-portal
   const { name, link, yaml, id, description } = workflowData;
 
   const [open, setOpen] = React.useState(false);
@@ -64,16 +40,24 @@ function VerifyCommit() {
   const [yamlStatus, setYamlStatus] = React.useState(
     'Your code is fine. You can move on!'
   );
-<<<<<<< HEAD
  
-  const [createWorkflow, { error, data }] = useMutation(CREATE_WORKFLOW as any)
-  createWorkflow({variables : {workflow_name: name, workflow_description:description }})
-=======
+  const [createChaosWorkFlow, { error, data }] = useMutation(CREATE_WORKFLOW);
+  const ChaosWorkFlowInputs = {
+  workflow_manifest:"Yaml will be here",
+    cronSyntax: "",
+    weightages: [{experiment_name:"ex", weightage:2}],
+    workflow_name:"pod-delete",
+    workflow_description:"good",
+    isCustomWorkflow:true,
+    project_id:"00000",
+    cluster_id:"1"
+  };
 
->>>>>>> upstream/litmus-portal
+
   const [modified, setModified] = React.useState(false);
 
   const handleOpen = () => {
+    createChaosWorkFlow({variables:{ChaosWorkFlowInput : ChaosWorkFlowInputs}})
     setModified(false);
     setOpen(true);
   };
@@ -103,16 +87,10 @@ function VerifyCommit() {
       setYamlStatus('Your code is fine. You can move on !');
     }
   }, [modified]);
-<<<<<<< HEAD
   
   const preventDefault = (event: React.SyntheticEvent) =>
     event.preventDefault();
 
-=======
-
-  const preventDefault = (event: React.SyntheticEvent) =>
-    event.preventDefault();
->>>>>>> upstream/litmus-portal
   return (
     <div>
       <div className={classes.root}>
@@ -122,7 +100,7 @@ function VerifyCommit() {
               <Typography className={classes.headerText}>
                 <strong> Confirmation of Results</strong>
               </Typography>
-
+              
               <div className={classes.suBody}>
                 <Typography align="left" className={classes.description}>
                   Before committing the workflow changes to your, verify and if
@@ -134,12 +112,10 @@ function VerifyCommit() {
             <img src={bfinance} alt="bfinance" className={classes.bfinIcon} />
           </div>
           <Divider />
-
           <div className={classes.innerDiv2}>
             <Typography align="left" className={classes.sumText}>
               <strong>Summary</strong>
-            </Typography>
-
+          </Typography> 
             <div className={classes.outerSum}>
               <div className={classes.summaryDiv}>
                 <div className={classes.innerSumDiv}>
@@ -264,7 +240,7 @@ function VerifyCommit() {
                 </div>
                 <div className={classes.yamlButton}>
                   <ButtonFilled handleClick={handleOpen} isPrimary>
-                    <div>View YAML</div>
+                    <div>View YAML</div>                    
                   </ButtonFilled>
                 </div>
               </div>
