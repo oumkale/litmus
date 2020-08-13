@@ -10,30 +10,43 @@ import CustomDate from '../DateTime/CustomDate';
 import CustomTime from '../DateTime/CustomTime';
 import useStyles from './styles';
 import YamlEditor from '../YamlEditor/Editor';
-import { WorkflowData } from '../../models/workflow';
+import { WorkflowData, experimentMap } from '../../models/workflow';
 import { RootState } from '../../redux/reducers';
 import {
   parseYamlValidations,
   AceValidations,
 } from '../YamlEditor/Validations';
+<<<<<<< HEAD
 import parsed from '../../utils/yamlUtils';
 import { useMutation, gql } from '@apollo/client';
 import { CREATE_WORKFLOW } from '../../schemas';
 // refractor needed
+=======
+import useActions from '../../redux/actions';
+import * as WorkflowActions from '../../redux/actions/workflow';
 
-function VerifyCommit() {
+interface VerifyCommitProps {
+  goto: () => void;
+}
+>>>>>>> upstream/litmus-portal
+
+const VerifyCommit: React.FC<VerifyCommitProps> = ({ goto }) => {
   const classes = useStyles();
-  const testVal1 = 10;
-  const testVal2 = 7;
-  const testVal3 = 4;
-  const testVal4 = 3;
-  const width1 = 299;
+  const width1 = 700;
   const width2 = 700;
+
+  const workflow = useActions(WorkflowActions);
+  const [edit, setEdit] = useState(true);
 
   const workflowData: WorkflowData = useSelector(
     (state: RootState) => state.workflowData
   );
+<<<<<<< HEAD
   const { name, link, yaml, id, description } = workflowData;
+=======
+
+  const { name, link, yaml, id, description, weights } = workflowData;
+>>>>>>> upstream/litmus-portal
 
   const [open, setOpen] = React.useState(false);
 
@@ -67,11 +80,21 @@ function VerifyCommit() {
     setOpen(false);
   };
 
-  const [WorkflowTestNames, setData] = useState(['']);
+  const handleNameChange = ({ changedName }: { changedName: string }) => {
+    workflow.setWorkflowDetails({
+      name: changedName,
+    });
+  };
+
+  const handleDescChange = ({ changedDesc }: { changedDesc: string }) => {
+    workflow.setWorkflowDetails({
+      description: changedDesc,
+    });
+  };
+
+  const WorkflowTestData: experimentMap[] = weights as any;
 
   useEffect(() => {
-    const tests = parsed(yaml);
-    setData(tests);
     let editorValidations: AceValidations = {
       markers: [],
       annotations: [],
@@ -95,6 +118,7 @@ function VerifyCommit() {
     <div>
       <div className={classes.root}>
         <div className={classes.suHeader}>
+<<<<<<< HEAD
           <div className={classes.suSegments}>
             <div>
               <Typography className={classes.headerText}>
@@ -121,111 +145,121 @@ function VerifyCommit() {
                 <div className={classes.innerSumDiv}>
                   <Typography className={classes.col1}>
                     Workflow name:
-                  </Typography>
-                </div>
-                <div className={classes.col2}>
-                  <CustomText value={name} id="name" width={width1} />
-                </div>
-              </div>
-              <div className={classes.summaryDiv}>
-                <div className={classes.innerSumDiv}>
-                  <Typography className={classes.col1}>Description:</Typography>
-                </div>
-                <div
-                  className={classes.col2}
-                  style={{
-                    width: 724,
-                  }}
-                >
-                  <CustomText value={description} id="desc" width={width2} />
-                </div>
-              </div>
-              <div className={classes.summaryDiv}>
-                <div
-                  style={{
-                    width: '9.375rem',
-                  }}
-                >
-                  <div className={classes.innerSumDiv}>
-                    <Typography className={classes.col1}>Schedule:</Typography>
-                  </div>
-                </div>
+=======
+          <div className={classes.suBody}>
+            <Typography className={classes.headerText}>
+              <strong> Confirmation of Results</strong>
+            </Typography>
+            <Typography className={classes.description}>
+              Before committing the workflow changes to your, verify and if
+              needed go back to a corresponding section of the wizard to modify.
+            </Typography>
+          </div>
+          <img src={bfinance} alt="bfinance" className={classes.bfinIcon} />
+        </div>
+        <Divider />
 
-                <div className={classes.schCol2}>
-                  <CustomDate disabled />
-                  <CustomTime ampm disabled />
-                  <div className={classes.editButton1}>
-                    <ButtonOutline
-                      isDisabled={false}
-                      handleClick={() => {}}
-                      data-cy="testRunButton"
-                    >
-                      <Typography className={classes.buttonOutlineText}>
-                        Edit
-                      </Typography>
-                    </ButtonOutline>
-                  </div>
-                </div>
-              </div>
-              <div className={classes.summaryDiv}>
-                <div
-                  className={classes.innerSumDiv}
-                  style={{
-                    width: '8.375rem',
-                  }}
+        <Typography className={classes.sumText}>
+          <strong>Summary</strong>
+        </Typography>
+
+        <div className={classes.outerSum}>
+          <div className={classes.summaryDiv}>
+            <div className={classes.innerSumDiv}>
+              <Typography className={classes.col1}>Workflow name:</Typography>
+            </div>
+            <div className={classes.col2}>
+              <CustomText
+                value={name}
+                id="name"
+                width={width1}
+                onchange={(changedName: string) =>
+                  handleNameChange({ changedName })
+                }
+              />
+            </div>
+          </div>
+          <div className={classes.summaryDiv}>
+            <div className={classes.innerSumDiv}>
+              <Typography className={classes.col1}>Description:</Typography>
+            </div>
+            <div
+              className={classes.col2}
+              style={{
+                width: 724,
+              }}
+            >
+              <CustomText
+                value={description}
+                id="desc"
+                width={width2}
+                onchange={(changedDesc: string) =>
+                  handleDescChange({ changedDesc })
+                }
+              />
+            </div>
+          </div>
+          <div className={classes.summaryDiv}>
+            <div className={classes.innerSumDiv}>
+              <Typography className={classes.col1}>Schedule:</Typography>
+            </div>
+            <div className={classes.schCol2}>
+              <CustomDate disabled={edit} />
+              <CustomTime ampm disabled={edit} />
+              <div className={classes.editButton1}>
+                <ButtonOutline
+                  isDisabled={false}
+                  handleClick={() => setEdit(!edit)}
+                  data-cy="testRunButton"
                 >
-                  <Typography className={classes.col1}>
-                    Adjusted Weights:
+                  <Typography className={classes.buttonOutlineText}>
+                    Edit
+>>>>>>> upstream/litmus-portal
                   </Typography>
-                </div>
-                {WorkflowTestNames[0] === 'Invalid CRD' ||
-                WorkflowTestNames[0] === 'Yaml Error' ? (
-                  <div>
-                    {' '}
-                    <Typography className={classes.errorText}>
-                      <strong>
-                        {' '}
-                        &nbsp; &nbsp; &nbsp; Invalid Workflow CRD found ! Please
-                        correct the errors.
-                      </strong>
-                    </Typography>
-                  </div>
-                ) : (
-                  <div className={classes.adjWeights}>
-                    <div className={classes.progress}>
-                      <AdjustedWeights
-                        testName={`${WorkflowTestNames[0]} test`}
-                        testValue={testVal1}
-                      />
-                      <AdjustedWeights
-                        testName=" Networking pod test "
-                        testValue={testVal2}
-                      />
-                      <div className={classes.editButton2}>
-                        <ButtonOutline
-                          isDisabled={false}
-                          handleClick={() => {}}
-                          data-cy="testRunButton"
-                        >
-                          <Typography className={classes.buttonOutlineText}>
-                            Edit
-                          </Typography>
-                        </ButtonOutline>
-                      </div>
-                    </div>
-                    <div className={classes.progress}>
-                      <AdjustedWeights
-                        testName="Config map multi volume test"
-                        testValue={testVal3}
-                      />
-                      <AdjustedWeights
-                        testName="Proxy-service-test"
-                        testValue={testVal4}
-                      />
-                    </div>
-                  </div>
-                )}
+                </ButtonOutline>
               </div>
+            </div>
+          </div>
+          <div className={classes.summaryDiv}>
+            <div className={classes.innerSumDiv}>
+              <Typography className={classes.col1}>
+                Adjusted Weights:
+              </Typography>
+            </div>
+            {WorkflowTestData[0].experimentName === 'Invalid CRD' ||
+            WorkflowTestData[0].experimentName === 'Yaml Error' ? (
+              <div>
+                {' '}
+                <Typography className={classes.errorText}>
+                  <strong>
+                    {' '}
+                    Invalid Workflow CRD found ! Please correct the errors.
+                  </strong>
+                </Typography>
+              </div>
+            ) : (
+              <div className={classes.adjWeights}>
+                <div className={classes.progress} style={{ flexWrap: 'wrap' }}>
+                  {WorkflowTestData.map((Test) => (
+                    <AdjustedWeights
+                      testName={`${Test.experimentName} test`}
+                      testValue={Test.weight}
+                    />
+                  ))}
+                </div>
+                {/* <div className={classes.editButton2}> */}
+                <ButtonOutline
+                  isDisabled={false}
+                  handleClick={() => goto()}
+                  data-cy="testRunButton"
+                >
+                  <Typography className={classes.buttonOutlineText}>
+                    Edit
+                  </Typography>
+                </ButtonOutline>
+                {/* </div> */}
+              </div>
+<<<<<<< HEAD
               <div className={classes.summaryDiv}>
                 <div className={classes.innerSumDiv}>
                   <Typography className={classes.col1}>YAML:</Typography>
@@ -243,28 +277,46 @@ function VerifyCommit() {
                     <div>View YAML</div>                    
                   </ButtonFilled>
                 </div>
+=======
+            )}
+          </div>
+          <div className={classes.summaryDiv}>
+            <div className={classes.innerSumDiv}>
+              <Typography className={classes.col1}>YAML:</Typography>
+            </div>
+            <div className={classes.yamlFlex}>
+              {WorkflowTestData[0].experimentName === 'Invalid CRD' ||
+              WorkflowTestData[0].experimentName === 'Yaml Error' ? (
+                <Typography> Error in CRD Yaml. </Typography>
+              ) : (
+                <Typography>{yamlStatus}</Typography>
+              )}
+              <div className={classes.yamlButton}>
+                <ButtonFilled handleClick={handleOpen} isPrimary>
+                  <div>View YAML</div>
+                </ButtonFilled>
+>>>>>>> upstream/litmus-portal
               </div>
             </div>
-
-            <Divider />
-          </div>
-
-          <div>
-            <Typography className={classes.config}>
-              The configuration details of this workflow will be committed to:{' '}
-              <span>
-                <Link
-                  href="https://github.com/abcorn-org/reputeops/sandbox-repute.yaml"
-                  onClick={preventDefault}
-                  className={classes.link}
-                >
-                  https://github.com/abcorn-org/reputeops/sandbox-repute.yaml
-                </Link>
-              </span>
-            </Typography>
           </div>
         </div>
+        <Divider />
+        <div>
+          <Typography className={classes.config}>
+            The configuration details of this workflow will be committed to:{' '}
+            <span>
+              <Link
+                href="https://github.com/abcorn-org/reputeops/sandbox-repute.yaml"
+                onClick={preventDefault}
+                className={classes.link}
+              >
+                https://github.com/abcorn-org/reputeops/sandbox-repute.yaml
+              </Link>
+            </span>
+          </Typography>
+        </div>
       </div>
+
       <Modal open={open} onClose={handleClose}>
         <div className={classes.modalContainer}>
           <div className={classes.modalContainerClose}>
@@ -283,11 +335,13 @@ function VerifyCommit() {
             yamlLink={link}
             id={id}
             description={description}
+            readOnly
+            optionsDisplay={false}
           />
         </div>
       </Modal>
     </div>
   );
-}
+};
 
 export default VerifyCommit;
