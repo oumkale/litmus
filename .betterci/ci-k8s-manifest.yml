@@ -57,10 +57,15 @@ spec:
         env:
           - name: DB_SERVER
             value: mongo-service:27017
+<<<<<<< HEAD
           - name: DB_NAME
             value: litmus
           - name: COLLECTION_NAME
             value: cluster-collection
+=======
+          - name: JWT_SECRET
+            value: "12345678"
+>>>>>>> upstream/litmus-portal
           - name: EXTERNAL_ADDRESS
             value: ""
           - name: SERVICE_ADDRESS

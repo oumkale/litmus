@@ -9,7 +9,11 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+<<<<<<< HEAD
 var secret = os.Getenv("CLUSTER_JWT_SECRET")
+=======
+var secret = os.Getenv("JWT_SECRET")
+>>>>>>> upstream/litmus-portal
 
 //ClusterCreateJWT generates jwt used in cluster registration
 func ClusterCreateJWT(id string) (string, error) {

@@ -2,6 +2,36 @@
 
 package model
 
+<<<<<<< HEAD
+=======
+type ActionPayload struct {
+	RequestID    *int    `json:"request_id"`
+	RequestType  *string `json:"request_type"`
+	K8sManifest  *string `json:"k8s_manifest"`
+	Namespace    *string `json:"namespace"`
+	ExternalData *string `json:"external_data"`
+}
+
+type ChaosWorkFlowInput struct {
+	WorkflowManifest    string             `json:"workflow_manifest"`
+	CronSyntax          string             `json:"cronSyntax"`
+	WorkflowName        string             `json:"workflow_name"`
+	WorkflowDescription string             `json:"workflow_description"`
+	Weightages          []*WeightagesInput `json:"weightages"`
+	IsCustomWorkflow    bool               `json:"isCustomWorkflow"`
+	ProjectID           string             `json:"project_id"`
+	ClusterID           string             `json:"cluster_id"`
+}
+
+type ChaosWorkFlowResponse struct {
+	WorkflowID          string `json:"workflow_id"`
+	CronSyntax          string `json:"cronSyntax"`
+	WorkflowName        string `json:"workflow_name"`
+	WorkflowDescription string `json:"workflow_description"`
+	IsCustomWorkflow    bool   `json:"isCustomWorkflow"`
+}
+
+>>>>>>> upstream/litmus-portal
 type Cluster struct {
 	ClusterID          string  `json:"cluster_id"`
 	ProjectID          string  `json:"project_id"`
@@ -18,8 +48,13 @@ type Cluster struct {
 }
 
 type ClusterAction struct {
+<<<<<<< HEAD
 	ProjectID string `json:"project_id"`
 	Action    string `json:"action"`
+=======
+	ProjectID string         `json:"project_id"`
+	Action    *ActionPayload `json:"action"`
+>>>>>>> upstream/litmus-portal
 }
 
 type ClusterActionInput struct {
@@ -61,6 +96,7 @@ type ClusterInput struct {
 	ClusterType  string  `json:"cluster_type"`
 }
 
+<<<<<<< HEAD
 type ChaosWorkFlowInput struct {
 	WorkflowYaml        string             `json:"workflow_yaml"`
 	CronSyntax          string             `json:"cronSyntax"`
@@ -85,6 +121,59 @@ type Weightages struct {
 }
 
 type WeightagesInput struct {
+=======
+type PodLog struct {
+	ClusterID     *ClusterIdentity `json:"cluster_id"`
+	RequestID     string           `json:"request_id"`
+	WorkflowRunID string           `json:"workflow_run_id"`
+	PodName       string           `json:"pod_name"`
+	PodType       string           `json:"pod_type"`
+	Log           string           `json:"log"`
+}
+
+type PodLogRequest struct {
+	ClusterID      string  `json:"cluster_id"`
+	WorkflowRunID  string  `json:"workflow_run_id"`
+	PodName        string  `json:"pod_name"`
+	PodNamespace   string  `json:"pod_namespace"`
+	PodType        string  `json:"pod_type"`
+	ExpPod         *string `json:"exp_pod"`
+	RunnerPod      *string `json:"runner_pod"`
+	ChaosNamespace *string `json:"chaos_namespace"`
+}
+
+type PodLogResponse struct {
+	WorkflowRunID string `json:"workflow_run_id"`
+	PodName       string `json:"pod_name"`
+	PodType       string `json:"pod_type"`
+	Log           string `json:"log"`
+}
+
+type WeightagesInput struct {
+	ExperimentName string `json:"experiment_name"`
+	Weightage      int    `json:"weightage"`
+}
+
+type WorkflowRun struct {
+	WorkflowRunID string `json:"workflow_run_id"`
+	WorkflowID    string `json:"workflow_id"`
+	ClusterName   string `json:"cluster_name"`
+	LastUpdated   string `json:"last_updated"`
+	ProjectID     string `json:"project_id"`
+	ClusterID     string `json:"cluster_id"`
+	WorkflowName  string `json:"workflow_name"`
+	ExecutionData string `json:"execution_data"`
+}
+
+type WorkflowRunInput struct {
+	WorkflowRunID string           `json:"workflow_run_id"`
+	WorkflowName  string           `json:"workflow_name"`
+	ExecutionData string           `json:"execution_data"`
+	ClusterID     *ClusterIdentity `json:"cluster_id"`
+}
+
+type Weightages struct {
+>>>>>>> upstream/litmus-portal
 	ExperimentName string `json:"experiment_name"`
 	Weightage      int    `json:"weightage"`
 }

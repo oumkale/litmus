@@ -6,16 +6,24 @@ package graph
 import (
 	"context"
 	"errors"
+<<<<<<< HEAD
 	"fmt"
+=======
+>>>>>>> upstream/litmus-portal
 	"log"
 	"strconv"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/litmuschaos/litmus/litmus-portal/backend/graphql-server/graph/generated"
 	"github.com/litmuschaos/litmus/litmus-portal/backend/graphql-server/graph/model"
 	"github.com/litmuschaos/litmus/litmus-portal/backend/graphql-server/pkg/cluster"
 	database "github.com/litmuschaos/litmus/litmus-portal/backend/graphql-server/pkg/database/mongodb"
 	"github.com/litmuschaos/litmus/litmus-portal/backend/graphql-server/pkg/graphql/mutations"
+<<<<<<< HEAD
+=======
+	"github.com/litmuschaos/litmus/litmus-portal/backend/graphql-server/pkg/graphql/queries"
+>>>>>>> upstream/litmus-portal
 	"github.com/litmuschaos/litmus/litmus-portal/backend/graphql-server/pkg/graphql/subscriptions"
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -32,8 +40,25 @@ func (r *mutationResolver) NewClusterEvent(ctx context.Context, clusterEvent mod
 	return mutations.NewEvent(clusterEvent, *store)
 }
 
+<<<<<<< HEAD
 func (r *mutationResolver) CreateChaosWorkFlow(ctx context.Context, input *model.ChaosWorkFlowInput) (*model.ChaosWorkFlowResponse, error) {
 	panic(fmt.Errorf("not implemented"))
+=======
+func (r *mutationResolver) CreateChaosWorkFlow(ctx context.Context, input model.ChaosWorkFlowInput) (*model.ChaosWorkFlowResponse, error) {
+	return mutations.CreateChaosWorkflow(&input, *store)
+}
+
+func (r *mutationResolver) ChaosWorkflowRun(ctx context.Context, workflowData model.WorkflowRunInput) (string, error) {
+	return mutations.WorkFlowRunHandler(workflowData, *store)
+}
+
+func (r *mutationResolver) PodLog(ctx context.Context, log model.PodLog) (string, error) {
+	return mutations.LogsHandler(log, *store)
+}
+
+func (r *queryResolver) GetWorkFlowRuns(ctx context.Context, projectID string) ([]*model.WorkflowRun, error) {
+	return queries.QueryWorkflowRuns(projectID)
+>>>>>>> upstream/litmus-portal
 }
 
 func (r *subscriptionResolver) ClusterEventListener(ctx context.Context, projectID string) (<-chan *model.ClusterEvent, error) {
@@ -97,11 +122,47 @@ func (r *subscriptionResolver) ClusterConnect(ctx context.Context, clusterInfo m
 	return clusterAction, nil
 }
 
+<<<<<<< HEAD
+=======
+func (r *subscriptionResolver) WorkflowEventListener(ctx context.Context, projectID string) (<-chan *model.WorkflowRun, error) {
+	log.Print("NEW WORKFLOW EVENT LISTENER", projectID)
+	workflowEvent := make(chan *model.WorkflowRun, 1)
+	store.Mutex.Lock()
+	store.WorkflowEventPublish[projectID] = append(store.WorkflowEventPublish[projectID], workflowEvent)
+	store.Mutex.Unlock()
+	go func() {
+		<-ctx.Done()
+		log.Print("CLOSED WORKFLOW LISTENER", projectID)
+	}()
+	return workflowEvent, nil
+}
+
+func (r *subscriptionResolver) GetPodLog(ctx context.Context, podDetails model.PodLogRequest) (<-chan *model.PodLogResponse, error) {
+	log.Print("NEW LOG REQUEST", podDetails.ClusterID, podDetails.PodName)
+	workflowLog := make(chan *model.PodLogResponse, 1)
+	cid := uuid.New()
+	store.Mutex.Lock()
+	store.WorkflowLog[cid.String()] = workflowLog
+	store.Mutex.Unlock()
+	go func() {
+		<-ctx.Done()
+		log.Print("CLOSED LOG LISTENER", podDetails.ClusterID, podDetails.PodName)
+		delete(store.WorkflowLog, cid.String())
+	}()
+	go queries.GetLogs(cid.String(), podDetails, *store)
+	return workflowLog, nil
+}
+
+>>>>>>> upstream/litmus-portal
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
+
+// Query returns generated.QueryResolver implementation.
+func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
 // Subscription returns generated.SubscriptionResolver implementation.
 func (r *Resolver) Subscription() generated.SubscriptionResolver { return &subscriptionResolver{r} }
 
 type mutationResolver struct{ *Resolver }
+type queryResolver struct{ *Resolver }
 type subscriptionResolver struct{ *Resolver }

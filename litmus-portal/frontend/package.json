@@ -44,9 +44,12 @@
     "redux-thunk": "^2.3.0",
     "subscriptions-transport-ws": "^0.9.17",
     "yaml": "^1.10.0"
+<<<<<<< HEAD
   },
   "eslintConfig": {
     "extends": "react-app"
+=======
+>>>>>>> upstream/litmus-portal
   },
   "lint-staged": {
     "src/**/*.+(js|jsx|ts|tsx)": [
@@ -84,7 +87,10 @@
     "@types/redux-logger": "^3.0.7",
     "@typescript-eslint/eslint-plugin": "^3.5.0",
     "@typescript-eslint/parser": "^3.5.0",
+<<<<<<< HEAD
     "babel-eslint": "^10.1.0",
+=======
+>>>>>>> upstream/litmus-portal
     "cross-env": "^5.2.0",
     "cypress": "^4.11.0",
     "cypress-react-unit-test": "^4.11.2",
