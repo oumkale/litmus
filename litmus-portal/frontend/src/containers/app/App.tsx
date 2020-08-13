@@ -15,6 +15,7 @@ const Workflows = lazy(() => import('../../pages/Workflows'));
 const LoginPage = lazy(() => import('../../pages/LoginPage'));
 const HomePage = lazy(() => import('../../pages/HomePage'));
 const Community = lazy(() => import('../../pages/Community'));
+const Settings = lazy(() => import('../../pages/Settings'));
 
 interface RoutesProps {
   userData: string;
@@ -22,7 +23,6 @@ interface RoutesProps {
 
 const Routes: React.FC<RoutesProps> = ({ userData }) => {
   const classes = useStyles();
-  
   if (userData === '') {
     return (
       <div className={classes.content}>
@@ -41,6 +41,7 @@ const Routes: React.FC<RoutesProps> = ({ userData }) => {
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/workflow" component={Workflows} />
         <Route exact path="/community" component={Community} />
+        <Route exact path="/settings" component={Settings} />
         <Route exact path="/404" component={ErrorPage} />
         <Redirect to="/404" />
       </Switch>

@@ -1,15 +1,14 @@
 import {
-  Typography,
   FormControl,
-  RadioGroup,
   FormControlLabel,
+  RadioGroup,
+  Typography,
 } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
 import * as React from 'react';
-import useStyles from './styles';
-import ButtonOutLine from '../Button/ButtonOutline'; 
 import ButtonFilled from '../Button/ButtonFilled';
+import ButtonOutLine from '../Button/ButtonOutline';
+import useStyles from './styles';
 /*
   Check is image which is used as
   a sign on cluster page
@@ -30,7 +29,7 @@ const WorkflowCluster = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
   };
-  const handleClick=()=>{}
+  const handleClick = () => {};
   return (
     <div className={classes.rootcontainer}>
       {/* Arrow mark */}
@@ -79,21 +78,22 @@ const WorkflowCluster = () => {
       */}
       <div className={classes.buttonDiv}>
         <div className={classes.button}>
-          <Button variant="contained" color="secondary" data-cy="selectButton">
-            Select and continue
-          </Button>
-        </div>    
-        
+          <ButtonFilled data-cy="gotItButton" isPrimary>
+            <div>Select and Continue</div>
+          </ButtonFilled>
+        </div>
+
         <div className={classes.or}>or</div>
-        <div >
+        <div>
           <ButtonOutLine
             isDisabled={false}
             data-cy="selectLitmusKubernetes"
             handleClick={handleClick}
           >
-              <Typography>Install Litmus agents to other Kubernetes cluster</Typography>
+            <Typography>
+              Install Litmus agents to other Kubernetes cluster
+            </Typography>
           </ButtonOutLine>
-          
         </div>
       
     </div>
