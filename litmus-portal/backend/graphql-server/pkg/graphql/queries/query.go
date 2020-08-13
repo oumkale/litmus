@@ -2,10 +2,11 @@ package queries
 
 import (
 	"encoding/json"
+	"log"
+
 	"github.com/litmuschaos/litmus/litmus-portal/backend/graphql-server/graph/model"
 	store "github.com/litmuschaos/litmus/litmus-portal/backend/graphql-server/pkg/data-store"
 	database "github.com/litmuschaos/litmus/litmus-portal/backend/graphql-server/pkg/database/mongodb"
-	"log"
 )
 
 //GetWorkflowRuns sends all the workflow runs for a project from the DB
@@ -28,9 +29,13 @@ func GetLogs(reqID string, pod model.PodLogRequest, r store.StateData) {
 	if err != nil {
 		log.Print("ERROR WHILE MARSHALLING POD DETAILS")
 	}
+
+	external_data := string(data)
 	payload := model.ClusterAction{
 		ProjectID: reqID,
-		Action:    string(data),
+		Action: &model.ActionPayload{
+			ExternalData: &external_data,
+		},
 	}
 	if clusterChan, ok := r.ConnectedCluster[pod.ClusterID]; ok {
 		clusterChan <- &payload

@@ -17,8 +17,12 @@ import {
   AceValidations,
 } from '../YamlEditor/Validations';
 import parsed from '../../utils/yamlUtils';
+<<<<<<< HEAD
 import { useMutation, gql } from '@apollo/client';
 import { CREATE_WORKFLOW } from '../../schemas';
+=======
+
+>>>>>>> upstream/litmus-portal
 // refractor needed
 
 function VerifyCommit() {
@@ -33,6 +37,7 @@ function VerifyCommit() {
   const workflowData: WorkflowData = useSelector(
     (state: RootState) => state.workflowData
   );
+<<<<<<< HEAD
   /*
   export interface experimentMap {
     experimentName: string;
@@ -49,6 +54,9 @@ function VerifyCommit() {
       cluster_id: ID!
   }
   */
+=======
+
+>>>>>>> upstream/litmus-portal
   const { name, link, yaml, id, description } = workflowData;
 
   const [open, setOpen] = React.useState(false);
@@ -56,9 +64,13 @@ function VerifyCommit() {
   const [yamlStatus, setYamlStatus] = React.useState(
     'Your code is fine. You can move on!'
   );
+<<<<<<< HEAD
  
   const [createWorkflow, { error, data }] = useMutation(CREATE_WORKFLOW as any)
   createWorkflow({variables : {workflow_name: name, workflow_description:description }})
+=======
+
+>>>>>>> upstream/litmus-portal
   const [modified, setModified] = React.useState(false);
 
   const handleOpen = () => {
@@ -91,10 +103,16 @@ function VerifyCommit() {
       setYamlStatus('Your code is fine. You can move on !');
     }
   }, [modified]);
+<<<<<<< HEAD
   
   const preventDefault = (event: React.SyntheticEvent) =>
     event.preventDefault();
 
+=======
+
+  const preventDefault = (event: React.SyntheticEvent) =>
+    event.preventDefault();
+>>>>>>> upstream/litmus-portal
   return (
     <div>
       <div className={classes.root}>
