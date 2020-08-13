@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
     borderColor: theme.palette.secondary.dark,
     marginRight: theme.spacing(2),
     marginLeft: theme.spacing(2),
+    textTransform: 'none',
   },
   valueField: {
     fontSize: '0.75rem',
