@@ -107,13 +107,9 @@ func GetIP() {
 		panic(err.Error())
 	}
 
-	pod := CreateHelperPod()
+	//pod := CreateHelperPod()
 
-	//fmt.Println("clientset :", clientset)
-	// Using clientset get nodes
-	node, err := clientset.CoreV1().Nodes().Get("minikube", metav1.GetOptions{})
-	// use get funct
-	//Get(name string, options metav1.GetOptions) (*v1.Node, error)
+    
 
 	pods, err := clientset.CoreV1().Pods("default").Get(metav1.GetOptions{})
 		if err != nil {
@@ -129,6 +125,13 @@ func GetIP() {
 	if err != nil {
 		panic(err)
 	}
+	//fmt.Println("clientset :", clientset)
+	// Using clientset get nodes
+	node, err := clientset.CoreV1().Nodes().Get("minikube", metav1.GetOptions{})
+	// use get funct
+	//Get(name string, options metav1.GetOptions) (*v1.Node, error)
+
+	
 	fmt.Println(nodes, fl)
 	//fmt.Println("nodes :", nodes)
 	// Traverse to node to get IP addresses
