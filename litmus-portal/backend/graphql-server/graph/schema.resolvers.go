@@ -84,3 +84,6 @@ func (r *Resolver) Subscription() generated.SubscriptionResolver { return &subsc
 
 type mutationResolver struct{ *Resolver }
 type subscriptionResolver struct{ *Resolver }
+
+
+// 
