@@ -32,7 +32,7 @@ const FinishModal = () => {
       <div className={classes.heading}>
         A new chaos workflow,
         <br />
-        <strong>was succussfully created!</strong>
+        <strong>was succusssfully created!</strong>
       </div>
       <div className={classes.headWorkflow}>
         Congratulations on creating your first workflow! Now information about{' '}
