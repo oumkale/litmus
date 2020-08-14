@@ -32,7 +32,7 @@ const Routes: React.FC<RoutesProps> = ({ userData }) => {
       </div>
     );
   }
-
+  
   return (
     <div className={classes.content}>
       <Switch>
