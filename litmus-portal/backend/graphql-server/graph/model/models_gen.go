@@ -3,6 +3,7 @@
 package model
 
 type ActionPayload struct {
+	RequestID    *int    `json:"request_id"`
 	RequestType  *string `json:"request_type"`
 	K8sManifest  *string `json:"k8s_manifest"`
 	Namespace    *string `json:"namespace"`
