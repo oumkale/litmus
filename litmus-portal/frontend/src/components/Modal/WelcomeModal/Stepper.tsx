@@ -103,7 +103,7 @@ const CStepper: React.FC<CStepperProps> = ({ handleModal }) => {
   const selectiveButtons = () => {
     if (activeStep === 0) {
       return (
-        <div className={classes.buttonDiv}>
+        <div className={classes.buttonDiv} data-cy="Continue">
           <Button variant="contained" color="secondary" onClick={handleNext}>
             Continue
           </Button>
@@ -113,10 +113,19 @@ const CStepper: React.FC<CStepperProps> = ({ handleModal }) => {
     if (activeStep === 3) {
       return (
         <div className={classes.buttonDiv}>
-          <Button className={classes.buttonOutline} onClick={handleBack}>
+          <Button
+            className={classes.buttonOutline}
+            onClick={handleBack}
+            data-cy="Skip"
+          >
             Skip
           </Button>
-          <Button variant="contained" color="secondary" onClick={handleSubmit}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleSubmit}
+            data-cy="Start"
+          >
             Let&#39;s Start
           </Button>
         </div>
@@ -124,10 +133,19 @@ const CStepper: React.FC<CStepperProps> = ({ handleModal }) => {
     }
     return (
       <div className={classes.buttonDiv}>
-        <Button className={classes.buttonOutline} onClick={handleBack}>
+        <Button
+          className={classes.buttonOutline}
+          onClick={handleBack}
+          data-cy="Back"
+        >
           Back
         </Button>
-        <Button variant="contained" color="secondary" onClick={handleNext}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleNext}
+          data-cy="Continue"
+        >
           Continue
         </Button>
       </div>
@@ -142,7 +160,7 @@ const CStepper: React.FC<CStepperProps> = ({ handleModal }) => {
           <ModalPage
             renderMenu={
               <div>
-                <div className={classes.inputArea}>
+                <div className={classes.inputArea} data-cy="InputProjectName">
                   <InputField
                     label="Project Name"
                     name="projectName"
@@ -166,7 +184,7 @@ const CStepper: React.FC<CStepperProps> = ({ handleModal }) => {
           <ModalPage
             renderMenu={
               <div>
-                <div className={classes.inputArea}>
+                <div className={classes.inputArea} data-cy="InputName">
                   <InputField
                     label="Full Name"
                     name="fullName"
@@ -189,7 +207,10 @@ const CStepper: React.FC<CStepperProps> = ({ handleModal }) => {
         return (
           <ModalPage
             renderMenu={
-              <div className={classes.passwordSetterDiv}>
+              <div
+                className={classes.passwordSetterDiv}
+                data-cy="InputPassword"
+              >
                 <div className={classes.passwordArea}>
                   <InputField
                     label="Password"
@@ -234,7 +255,7 @@ const CStepper: React.FC<CStepperProps> = ({ handleModal }) => {
           <ModalPage
             renderMenu={
               <div>
-                <div className={classes.inputArea}>
+                <div className={classes.inputArea} data-cy="InputEmail">
                   <InputField
                     label="Email Address"
                     name="emailAddress"

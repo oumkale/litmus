@@ -67,14 +67,15 @@ const ChooseWorkflow: React.FC = () => {
     {
       workflowID: '1',
       title: 'node-cpu-hog',
-      urlToIcon: 'https://hub.litmuschaos.io/api/icon/generic/pod-delete.png',
+      urlToIcon:
+        'https://hub.litmuschaos.io/api/icon/1.7.0/generic/node-cpu-hog.png',
       chaosWkfCRDLink:
         'https://raw.githubusercontent.com/litmuschaos/chaos-charts/master/workflows/node-cpu-hog/workflow.yaml',
 
       gitLink:
         'https://github.com/litmuschaos/chaos-charts/blob/master/workflows/node-cpu-hog/workflow.yaml',
       provider: 'MayaData',
-      description: 'Sample Description',
+      description: 'Injects a CPU spike on a node',
       totalRuns: 5300,
       isCustom: false,
     },
@@ -82,14 +83,14 @@ const ChooseWorkflow: React.FC = () => {
       workflowID: '2',
       title: 'node-memory-hog',
       urlToIcon:
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Kubernetes_logo_without_workmark.svg/1200px-Kubernetes_logo_without_workmark.svg.png',
+        'https://hub.litmuschaos.io/api/icon/1.7.0/generic/node-memory-hog.png',
       chaosWkfCRDLink:
         'https://raw.githubusercontent.com/litmuschaos/chaos-charts/master/workflows/node-memory-hog/workflow.yaml',
 
       gitLink:
         'https://github.com/litmuschaos/chaos-charts/blob/master/workflows/node-memory-hog/workflow.yaml',
       provider: 'MayaData',
-      description: 'Sample Description',
+      description: 'Injects a memory spike on a node',
       totalRuns: 5300,
       isCustom: false,
     },
@@ -102,12 +103,17 @@ const ChooseWorkflow: React.FC = () => {
       id: workflowsList[index].workflowID,
       yaml: 'none',
       description: workflowsList[index].description,
-      isCustomWorkflow: false,
+      isCustomWorkflow: workflowsList[index].isCustom,
     });
+
     setWorkflowData({
       workflowName: workflowsList[index].title,
       workflowDesc: workflowsList[index].description,
     });
+
+    if (workflowsList[index].isCustom === true) {
+      setOpen(true);
+    }
   };
 
   return (

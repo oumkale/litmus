@@ -19,7 +19,7 @@ import {
 import useStyles from './styles';
 
 interface VerifyCommitProps {
-  goto: () => void;
+  goto: (page: number) => void;
 }
 
 const VerifyCommit: React.FC<VerifyCommitProps> = ({ goto }) => {
@@ -190,6 +190,7 @@ const VerifyCommit: React.FC<VerifyCommitProps> = ({ goto }) => {
                 <div className={classes.progress} style={{ flexWrap: 'wrap' }}>
                   {WorkflowTestData.map((Test) => (
                     <AdjustedWeights
+                      key={Test.weight}
                       testName={`${Test.experimentName} test`}
                       testValue={Test.weight}
                     />
@@ -198,7 +199,7 @@ const VerifyCommit: React.FC<VerifyCommitProps> = ({ goto }) => {
                 {/* <div className={classes.editButton2}> */}
                 <ButtonOutline
                   isDisabled={false}
-                  handleClick={() => goto()}
+                  handleClick={() => goto(3)}
                   data-cy="testRunButton"
                 >
                   <Typography className={classes.buttonOutlineText}>

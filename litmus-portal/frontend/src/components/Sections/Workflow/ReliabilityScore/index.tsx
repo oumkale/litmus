@@ -83,7 +83,7 @@ const ReliablityScore = () => {
               </Typography>
             </div>
             {(weights as any).map((Data: experimentMap, index: number) => (
-              <div>
+              <div key={Data.weight}>
                 <div>
                   <WeightSlider
                     index={index}

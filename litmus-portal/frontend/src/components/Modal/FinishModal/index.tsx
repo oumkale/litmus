@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import React from 'react';
 import useStyles from './styles';
+import { history } from '../../../redux/configureStore';
 
 /* Icon function is used for finish modal to show mark */
 function Icon() {
@@ -10,18 +11,13 @@ function Icon() {
   return <img src="icons/finish.png" className={classes.mark} alt="mark" />;
 }
 
-const FinishModal = () => {
+interface FinishModal {
+  isOpen: boolean;
+  setOpen: (open: boolean) => void;
+}
+
+const FinishModal: React.FC<FinishModal> = ({ isOpen, setOpen }) => {
   const classes = useStyles();
-
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   /* Body part for modal */
   const body = (
@@ -41,7 +37,10 @@ const FinishModal = () => {
           variant="contained"
           color="secondary"
           data-cy="selectFinish"
-          // onClick = {}
+          onClick={() => {
+            history.push('/workflows');
+            setOpen(false);
+          }}
         >
           Back to workflow
         </Button>
@@ -51,20 +50,14 @@ const FinishModal = () => {
 
   return (
     <div>
-      <Button
-        variant="contained"
-        color="primary"
-        data-cy="selectModal"
-        onClick={handleOpen}
-      >
-        Completed
-      </Button>
-
       {/* Finish Modal is added */}
 
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={isOpen}
+        onClose={() => {
+          history.push('/workflows');
+          setOpen(false);
+        }}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >

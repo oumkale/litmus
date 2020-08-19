@@ -18,8 +18,10 @@ const PredifinedWorkflows: React.FC<PredifinedWorkflowsProps> = ({
     <div className={classes.root}>
       {workflows &&
         workflows.map((w: preDefinedWorkflowData, index: number) =>
-          w.customWorkflow ? (
-            <CustomWorkflowCard />
+          w.isCustom ? (
+            <CustomWorkflowCard
+              handleClick={() => CallbackOnSelectWorkflow(index)}
+            />
           ) : (
             <CustomCard
               key={w.workflowID}
@@ -27,7 +29,7 @@ const PredifinedWorkflows: React.FC<PredifinedWorkflowsProps> = ({
               urlToIcon={w.urlToIcon}
               provider={w.provider}
               chaosWkfCRDLink={w.chaosWkfCRDLink}
-              selectedID={w.selectedID}
+              selectedID={w.workflowID}
               handleClick={() => CallbackOnSelectWorkflow(index)}
               description={w.description}
               totalRuns={w.totalRuns}
