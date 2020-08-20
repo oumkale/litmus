@@ -167,7 +167,12 @@ const CustomStepper = () => {
       description.length !== 0 &&
       weights[0].experimentName !== 'Invalid CRD'
     ) {
-      const weightData: { experiment_name: string; weightage: number }[] = []; // eslint-disable-line no-eval
+      interface WeightMap {
+        experiment_name: string; // eslint-disable-line no-eval
+        weightage: number;
+      }
+
+      const weightData: WeightMap[] = [];
 
       weights.forEach((data) => {
         weightData.push({
