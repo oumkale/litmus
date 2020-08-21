@@ -1,15 +1,16 @@
 import { useMutation } from '@apollo/client/react/hooks';
-import Button from '@material-ui/core/Button';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import ButtonFilled from '../../Button/ButtonFilled';
 import config from '../../../config';
 import { RootState } from '../../../redux/reducers';
 import { CREATE_USER } from '../../../schemas';
 import InputField from '../../InputField';
 import ModalPage from './Modalpage';
 import useStyles from './styles';
+import ButtonOutline from '../../Button/ButtonOutline';
 
 interface CStepperProps {
   handleModal: () => void;
@@ -104,50 +105,40 @@ const CStepper: React.FC<CStepperProps> = ({ handleModal }) => {
     if (activeStep === 0) {
       return (
         <div className={classes.buttonDiv} data-cy="Continue">
-          <Button variant="contained" color="secondary" onClick={handleNext}>
-            Continue
-          </Button>
+          <ButtonFilled isPrimary handleClick={handleNext}>
+            <div>Continue</div>
+          </ButtonFilled>
         </div>
       );
     }
     if (activeStep === 3) {
       return (
         <div className={classes.buttonDiv}>
-          <Button
-            className={classes.buttonOutline}
-            onClick={handleBack}
+          <ButtonOutline
+            isDisabled={false}
+            handleClick={handleBack}
             data-cy="Skip"
           >
-            Skip
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={handleSubmit}
-            data-cy="Start"
-          >
-            Let&#39;s Start
-          </Button>
+            <div>Skip</div>
+          </ButtonOutline>
+          <ButtonFilled isPrimary handleClick={handleSubmit} data-cy="Start">
+            <div>Let&#39;s Start</div>
+          </ButtonFilled>
         </div>
       );
     }
     return (
       <div className={classes.buttonDiv}>
-        <Button
-          className={classes.buttonOutline}
-          onClick={handleBack}
+        <ButtonOutline
+          isDisabled={false}
+          handleClick={handleBack}
           data-cy="Back"
         >
-          Back
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleNext}
-          data-cy="Continue"
-        >
-          Continue
-        </Button>
+          <div>Back</div>
+        </ButtonOutline>
+        <ButtonFilled isPrimary handleClick={handleNext} data-cy="Continue">
+          <div>Continue</div>
+        </ButtonFilled>
       </div>
     );
   };

@@ -257,7 +257,7 @@ const CustomStepper = () => {
               ) : (
                 <ButtonFilled handleClick={() => handleNext()} isPrimary>
                   <div>
-                    Next{' '}
+                    Next
                     <img
                       alt="next"
                       src="icons/nextArrow.svg"

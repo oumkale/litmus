@@ -67,8 +67,7 @@ const ChooseWorkflow: React.FC = () => {
     {
       workflowID: '1',
       title: 'node-cpu-hog',
-      urlToIcon:
-        'https://hub.litmuschaos.io/api/icon/1.7.0/generic/node-cpu-hog.png',
+      urlToIcon: 'temp/node-cpu-hog.svg',
       chaosWkfCRDLink:
         'https://raw.githubusercontent.com/litmuschaos/chaos-charts/master/workflows/node-cpu-hog/workflow.yaml',
 
@@ -82,8 +81,7 @@ const ChooseWorkflow: React.FC = () => {
     {
       workflowID: '2',
       title: 'node-memory-hog',
-      urlToIcon:
-        'https://hub.litmuschaos.io/api/icon/1.7.0/generic/node-memory-hog.png',
+      urlToIcon: 'temp/node-memory-hog.svg',
       chaosWkfCRDLink:
         'https://raw.githubusercontent.com/litmuschaos/chaos-charts/master/workflows/node-memory-hog/workflow.yaml',
 

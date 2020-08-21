@@ -1,8 +1,8 @@
-import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import React from 'react';
 import useStyles from './styles';
 import { history } from '../../../redux/configureStore';
+import ButtonFilled from '../../Button/ButtonFilled';
 
 /* Icon function is used for finish modal to show mark */
 function Icon() {
@@ -11,12 +11,12 @@ function Icon() {
   return <img src="icons/finish.png" className={classes.mark} alt="mark" />;
 }
 
-interface FinishModal {
+interface FinishModalProps {
   isOpen: boolean;
   setOpen: (open: boolean) => void;
 }
 
-const FinishModal: React.FC<FinishModal> = ({ isOpen, setOpen }) => {
+const FinishModal: React.FC<FinishModalProps> = ({ isOpen, setOpen }) => {
   const classes = useStyles();
 
   /* Body part for modal */
@@ -33,17 +33,16 @@ const FinishModal: React.FC<FinishModal> = ({ isOpen, setOpen }) => {
         <br /> it will be displayed on the main screen of the application.
       </div>
       <div className={classes.button}>
-        <Button
-          variant="contained"
-          color="secondary"
+        <ButtonFilled
+          isPrimary
           data-cy="selectFinish"
-          onClick={() => {
+          handleClick={() => {
             history.push('/workflows');
             setOpen(false);
           }}
         >
-          Back to workflow
-        </Button>
+          <div>Back to workflow</div>
+        </ButtonFilled>
       </div>
     </div>
   );
