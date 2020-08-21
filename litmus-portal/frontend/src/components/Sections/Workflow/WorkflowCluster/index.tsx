@@ -40,6 +40,7 @@ const WorkflowCluster: React.FC<WorkflowClusterProps> = ({ goto }) => {
   const [value, setValue] = React.useState('Experiment');
   const workflow = useActions(WorkflowActions);
   const [select, setSelect] = React.useState(true);
+  const [isRegistered, setRegistration] = React.useState(' ');
   const userData: UserData = useSelector((state: RootState) => state.userData);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
@@ -47,12 +48,14 @@ const WorkflowCluster: React.FC<WorkflowClusterProps> = ({ goto }) => {
 
   const [getCluster] = useLazyQuery(GET_CLUSTER, {
     onCompleted: (data) => {
-      if (data && data.getCluster) {
+      if (data && data.getCluster.length !== 0) {
         workflow.setWorkflowDetails({
           clusterid: data.getCluster[0].cluster_id,
           project_id: userData.projectID,
         });
         goto(1);
+      } else {
+        setRegistration('***No cluster registered with your Project ID***');
       }
     },
   });
@@ -134,6 +137,11 @@ const WorkflowCluster: React.FC<WorkflowClusterProps> = ({ goto }) => {
             </Typography>
           </ButtonOutLine>
         </div>
+      </div>
+      <div className={classes.marginTemporary}>
+        <Typography className={classes.headcluster}>
+          <strong>{isRegistered}</strong>
+        </Typography>
       </div>
     </div>
   );
