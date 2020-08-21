@@ -19,10 +19,10 @@ import {
 import useStyles from './styles';
 
 interface VerifyCommitProps {
-  goto: (page: number) => void;
+  gotoStep: (page: number) => void;
 }
 
-const VerifyCommit: React.FC<VerifyCommitProps> = ({ goto }) => {
+const VerifyCommit: React.FC<VerifyCommitProps> = ({ gotoStep }) => {
   const classes = useStyles();
   const width1 = 700;
   const width2 = 700;
@@ -174,13 +174,10 @@ const VerifyCommit: React.FC<VerifyCommitProps> = ({ goto }) => {
                 Adjusted Weights:
               </Typography>
             </div>
-            {WorkflowTestData[0].experimentName === 'Invalid CRD' ||
-            WorkflowTestData[0].experimentName === 'Yaml Error' ? (
+            {weights.length === 0 ? (
               <div>
-                {' '}
                 <Typography className={classes.errorText}>
                   <strong>
-                    {' '}
                     Invalid Workflow CRD found ! Please correct the errors.
                   </strong>
                 </Typography>
@@ -199,7 +196,7 @@ const VerifyCommit: React.FC<VerifyCommitProps> = ({ goto }) => {
                 {/* <div className={classes.editButton2}> */}
                 <ButtonOutline
                   isDisabled={false}
-                  handleClick={() => goto(3)}
+                  handleClick={() => gotoStep(3)}
                   data-cy="testRunButton"
                 >
                   <Typography className={classes.buttonOutlineText}>
@@ -215,8 +212,7 @@ const VerifyCommit: React.FC<VerifyCommitProps> = ({ goto }) => {
               <Typography className={classes.col1}>YAML:</Typography>
             </div>
             <div className={classes.yamlFlex}>
-              {WorkflowTestData[0].experimentName === 'Invalid CRD' ||
-              WorkflowTestData[0].experimentName === 'Yaml Error' ? (
+              {weights.length === 0 ? (
                 <Typography> Error in CRD Yaml. </Typography>
               ) : (
                 <Typography>{yamlStatus}</Typography>

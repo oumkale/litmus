@@ -6,6 +6,7 @@ import useStyles, { CssTextField, ColorButton } from './styles';
 import useActions from '../../../../redux/actions';
 import * as WorkflowActions from '../../../../redux/actions/workflow';
 import PredifinedWorkflows from '../../../PredifinedWorkflows';
+import workflowsList from '../../../../models/data';
 // import { getWkfRunCount } from "../../utils";
 
 const ChooseWorkflow: React.FC = () => {
@@ -61,39 +62,6 @@ const ChooseWorkflow: React.FC = () => {
     });
   }, []);
 
-  // Fetch and Set preDefWorkflows from backend via GQL.
-
-  const workflowsList = [
-    {
-      workflowID: '1',
-      title: 'node-cpu-hog',
-      urlToIcon: 'temp/node-cpu-hog.svg',
-      chaosWkfCRDLink:
-        'https://raw.githubusercontent.com/litmuschaos/chaos-charts/master/workflows/node-cpu-hog/workflow.yaml',
-
-      gitLink:
-        'https://github.com/litmuschaos/chaos-charts/blob/master/workflows/node-cpu-hog/workflow.yaml',
-      provider: 'MayaData',
-      description: 'Injects a CPU spike on a node',
-      totalRuns: 5300,
-      isCustom: false,
-    },
-    {
-      workflowID: '2',
-      title: 'node-memory-hog',
-      urlToIcon: 'temp/node-memory-hog.svg',
-      chaosWkfCRDLink:
-        'https://raw.githubusercontent.com/litmuschaos/chaos-charts/master/workflows/node-memory-hog/workflow.yaml',
-
-      gitLink:
-        'https://github.com/litmuschaos/chaos-charts/blob/master/workflows/node-memory-hog/workflow.yaml',
-      provider: 'MayaData',
-      description: 'Injects a memory spike on a node',
-      totalRuns: 5300,
-      isCustom: false,
-    },
-  ];
-
   const selectWorkflow = (index: number) => {
     workflow.setWorkflowDetails({
       name: workflowsList[index].title,
@@ -130,7 +98,7 @@ const ChooseWorkflow: React.FC = () => {
             {workflowsList.length} pre-defined workflows
           </Typography>
           <PredifinedWorkflows
-            CallbackOnSelectWorkflow={(index: number) => {
+            callbackOnSelectWorkflow={(index: number) => {
               selectWorkflow(index);
             }}
             workflows={workflowsList}

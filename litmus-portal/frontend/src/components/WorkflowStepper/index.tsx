@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React from 'react';
 import Step from '@material-ui/core/Step';
 import { StepIconProps } from '@material-ui/core/StepIcon';
@@ -37,6 +36,11 @@ function getSteps(): string[] {
     'Schedule',
     'Verify and Commit',
   ];
+}
+
+interface WeightMap {
+  experiment_name: string;
+  weightage: number;
 }
 
 function QontoStepIcon(props: StepIconProps) {
@@ -84,11 +88,13 @@ function QontoStepIcon(props: StepIconProps) {
 
 function getStepContent(
   stepIndex: number,
-  goto: (page: number) => void
+  gotoStep: (page: number) => void
 ): React.ReactNode {
   switch (stepIndex) {
     case 0:
-      return <ChooseAWorkflowCluster goto={(page: number) => goto(page)} />;
+      return (
+        <ChooseAWorkflowCluster gotoStep={(page: number) => gotoStep(page)} />
+      );
     case 1:
       return <ChooseWorkflow />;
     case 2:
@@ -98,9 +104,11 @@ function getStepContent(
     case 4:
       return <ScheduleWorkflow />;
     case 5:
-      return <VerifyCommit goto={(page: number) => goto(page)} />;
+      return <VerifyCommit gotoStep={(page: number) => gotoStep(page)} />;
     default:
-      return <ChooseAWorkflowCluster goto={(page: number) => goto(page)} />;
+      return (
+        <ChooseAWorkflowCluster gotoStep={(page: number) => gotoStep(page)} />
+      );
   }
 }
 
@@ -162,28 +170,20 @@ const CustomStepper = () => {
   });
 
   const handleMutation = () => {
-    if (
-      name.length !== 0 &&
-      description.length !== 0 &&
-      weights[0].experimentName !== 'Invalid CRD'
-    ) {
-      interface WeightMap {
-        experiment_name: string; // eslint-disable-line no-eval
-        weightage: number;
-      }
-
+    if (name.length !== 0 && description.length !== 0 && weights.length !== 0) {
       const weightData: WeightMap[] = [];
 
       weights.forEach((data) => {
         weightData.push({
           experiment_name: data.experimentName,
           weightage: data.weight,
-        }); // eslint-disable-line no-eval
+        });
       });
 
+      // JSON.stringify takes 3 parameters [object to be converted, a function to alter the conversion, spaces to be shown in final result for indentation ]
       const yamlJson = JSON.stringify(yaml, null, 2);
 
-      const ChaosWorkFlowInputs = {
+      const chaosWorkFlowInputs = {
         workflow_manifest: yamlJson,
         cronSyntax: '',
         workflow_name: name,
@@ -194,12 +194,12 @@ const CustomStepper = () => {
         cluster_id: clusterid,
       };
       createChaosWorkFlow({
-        variables: { ChaosWorkFlowInput: ChaosWorkFlowInputs },
+        variables: { ChaosWorkFlowInput: chaosWorkFlowInputs },
       });
     }
   };
 
-  function goto({ page }: { page: number }) {
+  function gotoStep({ page }: { page: number }) {
     setActiveStep(page);
   }
 
@@ -236,7 +236,7 @@ const CustomStepper = () => {
               isOpen={modalOpen}
               setOpen={(open: boolean) => setModalOpen(open)}
             />
-            {getStepContent(activeStep, (page: number) => goto({ page }))}
+            {getStepContent(activeStep, (page: number) => gotoStep({ page }))}
           </div>
 
           {/* Control Buttons */}

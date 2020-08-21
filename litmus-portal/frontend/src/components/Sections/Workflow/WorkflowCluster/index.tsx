@@ -32,15 +32,15 @@ function Check() {
 */
 
 interface WorkflowClusterProps {
-  goto: (page: number) => void;
+  gotoStep: (page: number) => void;
 }
 
-const WorkflowCluster: React.FC<WorkflowClusterProps> = ({ goto }) => {
+const WorkflowCluster: React.FC<WorkflowClusterProps> = ({ gotoStep }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState('Experiment');
   const workflow = useActions(WorkflowActions);
-  const [select, setSelect] = React.useState(true);
-  const [isRegistered, setRegistration] = React.useState(' ');
+  const [isTragetSelected, setTarget] = React.useState(true);
+  const [isRegistered, setRegistration] = React.useState(true);
   const userData: UserData = useSelector((state: RootState) => state.userData);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
@@ -53,9 +53,9 @@ const WorkflowCluster: React.FC<WorkflowClusterProps> = ({ goto }) => {
           clusterid: data.getCluster[0].cluster_id,
           project_id: userData.projectID,
         });
-        goto(1);
+        gotoStep(1);
       } else {
-        setRegistration('***No cluster registered with your Project ID***');
+        setRegistration(false);
       }
     },
   });
@@ -87,7 +87,7 @@ const WorkflowCluster: React.FC<WorkflowClusterProps> = ({ goto }) => {
           <FormControl component="fieldset">
             <RadioGroup
               data-cy="selectRadio"
-              onClick={() => setSelect(false)}
+              onClick={() => setTarget(false)}
               aria-label="D"
               name="radio-button-demo"
               value={value}
@@ -118,7 +118,7 @@ const WorkflowCluster: React.FC<WorkflowClusterProps> = ({ goto }) => {
           <ButtonFilled
             data-cy="gotItButton"
             isPrimary
-            isDisabled={select}
+            isDisabled={isTragetSelected}
             handleClick={() => handleClick()}
           >
             <div>Select and Continue</div>
@@ -138,11 +138,13 @@ const WorkflowCluster: React.FC<WorkflowClusterProps> = ({ goto }) => {
           </ButtonOutLine>
         </div>
       </div>
-      <div className={classes.marginTemporary}>
-        <Typography className={classes.headcluster}>
-          <strong>{isRegistered}</strong>
-        </Typography>
-      </div>
+      {isRegistered ? null : (
+        <div className={classes.marginTemporary}>
+          <Typography className={classes.headcluster}>
+            <strong>***No cluster registered with your Project ID***</strong>
+          </Typography>
+        </div>
+      )}
     </div>
   );
 };
