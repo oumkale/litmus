@@ -6,13 +6,8 @@ import { mount } from 'cypress-react-unit-test';
 import { Provider } from 'react-redux';
 import CustomStepper from '../../src/components/WorkflowStepper';
 import configureStore from '../../src/redux/configureStore';
-const {store} = configureStore();
 
-const client = new ApolloClient({
-  cache: new InMemoryCache(),
-});
-
-const wrapper = (<ApolloProvider client={client}><Provider store={store}><CustomStepper /></Provider></ ApolloProvider>);
+const { store } = configureStore();
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
