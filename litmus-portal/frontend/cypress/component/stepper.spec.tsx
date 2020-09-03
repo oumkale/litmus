@@ -1,10 +1,6 @@
 /// <reference types="Cypress" />
 
-import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-} from '@apollo/client';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import React from 'react';
 import { mount } from 'cypress-react-unit-test';
 import { Provider } from 'react-redux';
@@ -17,6 +13,18 @@ const client = new ApolloClient({
 });
 
 const wrapper = (<ApolloProvider client={client}><Provider store={store}><CustomStepper /></Provider></ ApolloProvider>);
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+});
+
+const wrapper = (
+  <ApolloProvider client={client}>
+    <Provider store={store}>
+      <CustomStepper />
+    </Provider>
+  </ApolloProvider>
+);
 
 // Test Suite - Stepper Labels are present
 describe('Input Data is present', () => {

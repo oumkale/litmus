@@ -17,7 +17,7 @@ SELF_DEPLOYER_IMAGE ?= litmusportal-self-deployer
 IMGTAG ?= ci
 
 .PHONY: all
-all: deps litmus-portal-check litmus-portal-test build push
+all: deps litmus-portal-check build push
 
 .PHONY: help
 help:
@@ -51,7 +51,7 @@ litmus-portal-build:
 	docker build ./backend/graphql-server -f backend/graphql-server/build/Dockerfile -t $(REPONAME)/$(GRAPHQL_SERVER_IMAGE):$(IMGTAG)
 	docker build ./backend/auth -f backend/auth/Dockerfile -t $(REPONAME)/$(AUTHENTICATION_SERVER_IMAGE):$(IMGTAG)
 	docker build ./backend/subscriber -f backend/subscriber/build/Dockerfile -t $(REPONAME)/$(SUBSCRIBER_IMAGE):$(IMGTAG)
-	docker build ./backend/self-deployer -f backend/self-deployer/build/Dockerfile -t $(REPONAME)/$(SELF_DEPLOYER_IMAGE):$(IMGTAG)
+	docker build ./backend/tools/self-deployer -f backend/tools/self-deployer/build/Dockerfile -t $(REPONAME)/$(SELF_DEPLOYER_IMAGE):$(IMGTAG)
 
 .PHONY: push
 push: litmus-portal-push
@@ -60,11 +60,11 @@ litmus-portal-push:
 	@echo "------------------"
 	@echo "--> Push frontend and backend images" 
 	@echo "------------------"
-	REPONAME=$(REPONAME) IMGNAME=$(FRONTEND_IMAGE) IMGTAG=$(IMGTAG) bash ../hack/push
-	REPONAME=$(REPONAME) IMGNAME=$(GRAPHQL_SERVER_IMAGE) IMGTAG=$(IMGTAG) bash ../hack/push
-	REPONAME=$(REPONAME) IMGNAME=$(SUBSCRIBER_IMAGE) IMGTAG=$(IMGTAG) bash ../hack/push
-	REPONAME=$(REPONAME) IMGNAME=$(AUTHENTICATION_SERVER_IMAGE) IMGTAG=$(IMGTAG) bash ../hack/push
-	REPONAME=$(REPONAME) IMGNAME=$(SELF_DEPLOYER_IMAGE) IMGTAG=$(IMGTAG) bash ../hack/push
+	REPONAME=$(REPONAME) IMGNAME=$(FRONTEND_IMAGE) IMGTAG=$(IMGTAG) bash  ../hack/push
+	REPONAME=$(REPONAME) IMGNAME=$(GRAPHQL_SERVER_IMAGE) IMGTAG=$(IMGTAG) bash  ../hack/push
+	REPONAME=$(REPONAME) IMGNAME=$(SUBSCRIBER_IMAGE) IMGTAG=$(IMGTAG) bash  ../hack/push
+	REPONAME=$(REPONAME) IMGNAME=$(AUTHENTICATION_SERVER_IMAGE) IMGTAG=$(IMGTAG) bash  ../hack/push
+	REPONAME=$(REPONAME) IMGNAME=$(SELF_DEPLOYER_IMAGE) IMGTAG=$(IMGTAG) bash  ../hack/push
 
 
 .PHONY: litmus-portal-check
@@ -72,37 +72,41 @@ litmus-portal-check : lint-checks unused-package-check
 
 lint-checks:
 	@echo "------------------"
-	@echo "--> checking code style"
+	@echo "--> checking code style [frontend]"
+	@echo "------------------"
+	cd frontend && npm i eslint --no-save && npm run lint
+
+	@echo "------------------"
+	@echo "--> checking code style [backend]"
 	@echo "------------------"
 	@fmtRes=$$(gofmt -d $$(find . -path ./vendor -prune -o -name '*.go' -print)); \
 	if [ -n "$${fmtRes}" ]; then \
-		echo "gofmt checking failed!"; echo "$${fmtRes}"; echo; \
-		echo "Please ensure you are using $$($(GO) version) for formatting code."; \
+		echo "gofmt checking failed!" && echo "$${fmtRes}" \
+		&& echo "Please ensure you are using $$($(GO) version) for formatting code." \
+		&& exit 1;\
 	fi
 
 unused-package-check:
+	@echo "------------------"
+	@echo "--> Check litmus-portal frontend [depcheck]"
+	@echo "------------------"
+	cd frontend && npm i depcheck --no-save && node_modules/.bin/depcheck --skip-missing .
+
 	@echo "------------------"
 	@echo "--> Check litmus-portal backend [go mod tidy]"
 	@echo "------------------"
 	@tidyRes=$$(cd backend/graphql-server && go mod tidy); \
 	if [ -n "$${tidyRes}" ]; then \
-		echo "go mod tidy checking failed!"; echo "$${tidyRes}"; echo; \
-		echo "Please ensure you are using $$($(GO) version) for formatting code."; \
+		echo "go mod tidy checking failed!" && echo "$${tidyRes}" \
+		&& echo "Please ensure you are using $$($(GO) version) for formatting code." \
+		&& exit 1; \
 	fi
 	@echo "------------------"
 	@echo "--> Check litmus-portal auth [go mod tidy]"
 	@echo "------------------"
 	@tidyRes=$$(cd backend/auth && go mod tidy); \
 	if [ -n "$${tidyRes}" ]; then \
-		echo "go mod tidy checking failed!"; echo "$${tidyRes}"; echo; \
-		echo "Please ensure you are using $$($(GO) version) for formatting code."; \
+		echo "go mod tidy checking failed!" && echo "$${tidyRes}" \
+		&& echo "Please ensure you are using $$($(GO) version) for formatting code." \
+		&& exit 1; \
 	fi
-	
-.PHONY: litmus-portal-test
-litmus-portal-test : frontend-unit-test
-
-frontend-unit-test:
-	@echo "------------------"
-	@echo "--> Frontend Unit Test"
-	@echo "------------------"
-	cd ./frontend && npm i && npx cypress run

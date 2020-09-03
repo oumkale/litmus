@@ -1,4 +1,4 @@
-import { Button, Divider, Link, Modal, Typography } from '@material-ui/core';
+import { Divider, Link, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { experimentMap, WorkflowData } from '../../../../models/workflow';
@@ -17,6 +17,7 @@ import {
   parseYamlValidations,
 } from '../../../YamlEditor/Validations';
 import useStyles from './styles';
+import Unimodal from '../../../../containers/layouts/Unimodal';
 
 interface VerifyCommitProps {
   gotoStep: (page: number) => void;
@@ -190,6 +191,8 @@ const VerifyCommit: React.FC<VerifyCommitProps> = ({ gotoStep }) => {
                       key={Test.weight}
                       testName={`${Test.experimentName} test`}
                       testValue={Test.weight}
+                      spacing={false}
+                      icon={false}
                     />
                   ))}
                 </div>
@@ -242,7 +245,7 @@ const VerifyCommit: React.FC<VerifyCommitProps> = ({ gotoStep }) => {
         </div>
       </div>
 
-      <Modal open={open} onClose={handleClose}>
+      {/* <Modal open={open} onClose={handleClose}>
         <div className={classes.modalContainer}>
           <div className={classes.modalContainerClose}>
             <Button
@@ -264,7 +267,18 @@ const VerifyCommit: React.FC<VerifyCommitProps> = ({ gotoStep }) => {
             optionsDisplay={false}
           />
         </div>
-      </Modal>
+      </Modal> */}
+      <Unimodal isOpen={open} handleClose={handleClose} hasCloseBtn isDark>
+        <YamlEditor
+          content={yaml}
+          filename={name}
+          yamlLink={link}
+          id={id}
+          description={description}
+          readOnly
+          optionsDisplay={false}
+        />
+      </Unimodal>
     </div>
   );
 };

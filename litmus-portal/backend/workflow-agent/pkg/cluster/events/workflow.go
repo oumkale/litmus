@@ -1,6 +1,8 @@
 package events
 
 import (
+	"time"
+
 	"github.com/argoproj/argo/pkg/apis/workflow/v1alpha1"
 	"github.com/argoproj/argo/pkg/client/clientset/versioned"
 	"github.com/argoproj/argo/pkg/client/informers/externalversions"
@@ -9,7 +11,6 @@ import (
 	"github.com/litmuschaos/litmus/litmus-portal/backend/workflow-agent/pkg/types"
 	"github.com/sirupsen/logrus"
 	"k8s.io/client-go/tools/cache"
-	"time"
 )
 
 // 0 means no resync
@@ -68,11 +69,10 @@ func workflowEventHandler(obj interface{}, eventType string, stream chan types.W
 	if err != nil {
 		logrus.WithError(err).Fatal("could not get Chaos ClientSet")
 	}
-	mp := make(map[string]types.Node)
-	logrus.Print("WORKFLOW ", workflowObj.UID)
+	nodes := make(map[string]types.Node)
+	logrus.Print("WORKFLOW EVENT ", workflowObj.UID, " ", eventType)
 	for _, nodeStatus := range workflowObj.Status.Nodes {
 		nodeType := string(nodeStatus.Type)
-		logrus.Print(nodeStatus.Name)
 		var cd *types.ChaosData = nil
 		// considering chaos workflow has only 1 artifact with manifest as raw data
 		if nodeStatus.Type == "Pod" && nodeStatus.Inputs != nil && len(nodeStatus.Inputs.Artifacts) == 1 {
@@ -91,7 +91,7 @@ func workflowEventHandler(obj interface{}, eventType string, stream chan types.W
 			Children:   nodeStatus.Children,
 			ChaosExp:   cd,
 		}
-		mp[nodeStatus.ID] = details
+		nodes[nodeStatus.ID] = details
 	}
 	workflow := types.WorkflowEvent{
 		EventType:         eventType,
@@ -102,7 +102,7 @@ func workflowEventHandler(obj interface{}, eventType string, stream chan types.W
 		Phase:             string(workflowObj.Status.Phase),
 		StartedAt:         StrConvTime(workflowObj.Status.StartedAt.Unix()),
 		FinishedAt:        StrConvTime(workflowObj.Status.FinishedAt.Unix()),
-		Nodes:             mp,
+		Nodes:             nodes,
 	}
 	//stream
 	stream <- workflow

@@ -3,13 +3,11 @@ import Step from '@material-ui/core/Step';
 import { StepIconProps } from '@material-ui/core/StepIcon';
 import StepLabel from '@material-ui/core/StepLabel';
 import Stepper from '@material-ui/core/Stepper';
-import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
 import { useSelector } from 'react-redux';
 import { useMutation } from '@apollo/client';
 import ButtonFilled from '../Button/ButtonFilled';
 import ButtonOutline from '../Button/ButtonOutline';
-import FinishModal from '../Modal/FinishModal';
 import ReliablityScore from '../Sections/Workflow/ReliabilityScore';
 import ScheduleWorkflow from '../Sections/Workflow/ScheduleWorkflow';
 import VerifyCommit from '../Sections/Workflow/VerifyCommit';
@@ -25,7 +23,9 @@ import { RootState } from '../../redux/reducers';
 import useActions from '../../redux/actions';
 import * as WorkflowActions from '../../redux/actions/workflow';
 import parsed from '../../utils/yamlUtils';
-import { CREATE_WORKFLOW } from '../../schemas';
+import { CREATE_WORKFLOW } from '../../graphql';
+import Unimodal from '../../containers/layouts/Unimodal';
+import { history } from '../../redux/configureStore';
 
 function getSteps(): string[] {
   return [
@@ -50,10 +50,9 @@ function QontoStepIcon(props: StepIconProps) {
   if (completed) {
     return (
       <div
-        className={clsx(classes.root, {
-          [classes.active]: active,
-          [classes.completed]: completed,
-        })}
+        className={`${classes.root} ${
+          active ? classes.active : classes.completed
+        }`}
       >
         <img src="./icons/NotPass.png" alt="Not Completed Icon" />
       </div>
@@ -62,10 +61,9 @@ function QontoStepIcon(props: StepIconProps) {
   if (active) {
     return (
       <div
-        className={clsx(classes.root, {
-          [classes.active]: active,
-          [classes.completed]: completed,
-        })}
+        className={`${classes.root} ${
+          active ? classes.active : classes.completed
+        }`}
       >
         <div className={classes.circle} />
       </div>
@@ -73,10 +71,9 @@ function QontoStepIcon(props: StepIconProps) {
   }
   return (
     <div
-      className={clsx(classes.root, {
-        [classes.active]: active,
-        [classes.completed]: completed,
-      })}
+      className={`${classes.root} ${
+        active ? classes.active : classes.completed
+      }`}
     >
       {/* <img src="./icons/workflowNotActive.svg" /> */}
       <div className={classes.outerCircle}>
@@ -132,7 +129,6 @@ const CustomStepper = () => {
 
   const { projectID } = userData;
 
-  const [modalOpen, setModalOpen] = React.useState(false);
   const workflow = useActions(WorkflowActions);
 
   const steps = getSteps();
@@ -159,15 +155,13 @@ const CustomStepper = () => {
     }
   };
 
+  const [open, setOpen] = React.useState(false);
+
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const [createChaosWorkFlow] = useMutation(CREATE_WORKFLOW, {
-    onCompleted: () => {
-      setModalOpen(true);
-    },
-  });
+  const [createChaosWorkFlow] = useMutation(CREATE_WORKFLOW);
 
   const handleMutation = () => {
     if (name.length !== 0 && description.length !== 0 && weights.length !== 0) {
@@ -180,7 +174,8 @@ const CustomStepper = () => {
         });
       });
 
-      // JSON.stringify takes 3 parameters [object to be converted, a function to alter the conversion, spaces to be shown in final result for indentation ]
+      /* JSON.stringify takes 3 parameters [object to be converted,
+      a function to alter the conversion, spaces to be shown in final result for indentation ] */
       const yamlJson = JSON.stringify(yaml, null, 2);
 
       const chaosWorkFlowInputs = {
@@ -197,6 +192,16 @@ const CustomStepper = () => {
         variables: { ChaosWorkFlowInput: chaosWorkFlowInputs },
       });
     }
+  };
+
+  const handleOpen = () => {
+    handleMutation();
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    history.push('/workflows');
+    setOpen(false);
   };
 
   function gotoStep({ page }: { page: number }) {
@@ -231,11 +236,44 @@ const CustomStepper = () => {
       </Stepper>
       <div>
         <div>
-          <div className={classes.content}>
-            <FinishModal
-              isOpen={modalOpen}
-              setOpen={(open: boolean) => setModalOpen(open)}
-            />
+          <div>
+            <Unimodal
+              isOpen={open}
+              handleClose={handleClose}
+              aria-labelledby="simple-modal-title"
+              aria-describedby="simple-modal-description"
+              hasCloseBtn={false}
+            >
+              <div className={classes.content}>
+                <img
+                  src="icons/finish.svg"
+                  className={classes.mark}
+                  alt="mark"
+                />
+                <div className={classes.heading}>
+                  A new chaos workflow,
+                  <br />
+                  <strong>was successfully created!</strong>
+                </div>
+                <div className={classes.headWorkflow}>
+                  Congratulations on creating your first workflow! Now
+                  information about <br /> it will be displayed on the main
+                  screen of the application.
+                </div>
+                <div className={classes.button}>
+                  <ButtonFilled
+                    isPrimary
+                    data-cy="selectFinish"
+                    handleClick={() => {
+                      history.push('/workflows');
+                      setOpen(false);
+                    }}
+                  >
+                    <div>Back to workflow</div>
+                  </ButtonFilled>
+                </div>
+              </div>
+            </Unimodal>
             {getStepContent(activeStep, (page: number) => gotoStep({ page }))}
           </div>
 
@@ -246,12 +284,7 @@ const CustomStepper = () => {
                 <Typography>Back</Typography>
               </ButtonOutline>
               {activeStep === steps.length - 1 ? (
-                <ButtonFilled
-                  handleClick={() => {
-                    handleMutation();
-                  }}
-                  isPrimary
-                >
+                <ButtonFilled handleClick={handleOpen} isPrimary>
                   <div>Finish</div>
                 </ButtonFilled>
               ) : (
