@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/litmuschaos/litmus/litmus-portal/backend/graphql-server/graph/pkg/project/create"
+	"github.com/litmuschaos/litmus/litmus-portal/backend/graphql-server/graph/model"
 	database "github.com/litmuschaos/litmus/litmus-portal/backend/graphql-server/pkg/database/mongodb/operations"
 	dbSchema "github.com/litmuschaos/litmus/litmus-portal/backend/graphql-server/pkg/database/mongodb/schema"
 )
