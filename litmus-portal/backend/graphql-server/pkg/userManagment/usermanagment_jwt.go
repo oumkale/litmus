@@ -10,7 +10,7 @@ var (
 	secret    = "litmus-portal@123"
 )
 
-//userManagment validates ...
+//Validation ...
 func Validation(ctx context.Context, token string) (bool) {
 	
 	// Parsing the token
