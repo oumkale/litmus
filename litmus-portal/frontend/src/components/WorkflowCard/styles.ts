@@ -196,7 +196,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 3,
   },
   infraChaosMain: {
-    fontSize: '0.625rem',
+    fontSize: '0.6255rem',
     fontWeight: 500,
   },
 }));
